@@ -1,0 +1,320 @@
+/*
+ * Thalem Space stylesheet
+ *
+ * This stylesheet defines a dark theme and shared styles across all
+ * pages. Variables are defined at the top for easy customization.
+ */
+
+:root {
+  --bg-color: #0d1117;
+  --card-bg: #161b22;
+  --primary-color: #c9d1d9;
+  --secondary-color: #8b949e;
+  --accent-color: #58a6ff;
+  --border-color: #30363d;
+  --max-width: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Header and navigation */
+header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo a {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-links li a:hover {
+  color: var(--accent-color);
+}
+
+/* Home page */
+.home {
+  text-align: center;
+  padding: 3rem 1rem 4rem;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin: 0 0 1rem;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: var(--secondary-color);
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.feature {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.feature h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.feature p {
+  margin: 0;
+  color: var(--secondary-color);
+}
+
+/* Tools listing */
+.tools {
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.tools h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.tool-card {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tool-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.tool-card p {
+  margin: 0.25rem 0;
+  color: var(--secondary-color);
+}
+
+.tool-card .price {
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-top: 0.5rem;
+}
+
+.tool-card .details-link {
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tool-card .details-link:hover {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+.no-tools {
+  text-align: center;
+  color: var(--secondary-color);
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+/* Tool detail page */
+.tool-main {
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.tool-main h1 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.tool-main p {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+}
+
+.tool-main .video-wrapper {
+  margin: 1rem 0 2rem;
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.tool-main .video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+
+.tool-main ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tool-main ul li {
+  margin-bottom: 0.5rem;
+}
+
+.tool-main .price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-top: 1rem;
+}
+
+.tool-main .actions {
+  margin-top: 1.5rem;
+}
+
+.tool-main .buy-button {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  margin-right: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.tool-main .buy-button:hover {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.tool-main .repo-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.tool-main .repo-link:hover {
+  text-decoration: underline;
+}
+
+/* About & hire pages */
+.about,
+.hire {
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about h1,
+.hire h1 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.about p,
+.hire p {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  line-height: 1.6;
+}
+
+.hire a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.hire a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  color: var(--secondary-color);
+}
