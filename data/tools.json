@@ -1,1 +1,37 @@
-[]
+[
+  {
+    "name": "Project Phase Tracker",
+    "slug": "project-phase-tracker",
+    "image": "Project-Phase-Tracker.png",
+    "price_eur": 3,
+    "pricing_label": "€3 one-time",
+    "platform": ["web"],
+    "category": "Planning",
+    "tagline": "A lightweight, offline-first tracker for moving projects cleanly from idea to done.",
+    "description": "Project Phase Tracker helps you manage multiple projects by moving each one through a simple lifecycle: Idea → Build → Fix → Done. Everything runs locally in your browser—no accounts, no sync, no distractions. Especially useful when you want structure without overhead.",
+    "features": [
+      "Track projects across four phases: Idea, Build, Fix, Done",
+      "Inline project inspector for editing owner, due date, and notes without leaving the board",
+      "Phase-aware notes so context stays with each stage",
+      "Sort and search projects by update time, phase, due date, or creation",
+      "Export and import projects as JSON",
+      "Fully offline — data stored locally in your browser"
+    ],
+    "for_who": [
+      "Freelancers managing multiple small to medium projects",
+      "Solo builders who want a clear, lightweight overview",
+      "Anyone who prefers simple tools over complex project managers"
+    ],
+    "not_for": [
+      "Large teams needing real-time collaboration",
+      "Projects requiring cloud sync or multi-user access"
+    ],
+    "repo_url": "https://github.com/l3sm/Project-Phase-Tracker",
+    "release_url": "https://github.com/l3sm/Project-Phase-Tracker/releases/tag/v1.0.0",
+    "video_url": "https://youtu.be/7yhx14DkoNg",
+    "buy_url": "",
+    "buy_mode": "placeholder",
+    "status": "v1.0.0",
+    "updated_label": "v1.0.0"
+  }
+]
