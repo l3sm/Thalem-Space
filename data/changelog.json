@@ -1,0 +1,8 @@
+[
+  {
+    "date": "16 Mar 2026",
+    "type": "release",
+    "title": "AI audit crew launched",
+    "description": "Automated a 7-agent AI team to audit the Android app before every Play Store release. The crew reviews security, performance, UX, and code quality, then delivers a full report."
+  }
+]

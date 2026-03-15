@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thalem Space | Changelog</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .changelog {
+        padding: 2rem 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .changelog h1 {
+        font-size: 1.8rem;
+        margin-top: 0;
+        margin-bottom: 0.25rem;
+      }
+      .changelog .subtitle {
+        color: var(--secondary-color);
+        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+      }
+      .log-entry {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+      .log-entry::before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 24px;
+        bottom: -2rem;
+        width: 1px;
+        background-color: var(--border-color);
+      }
+      .log-entry:last-child::before {
+        display: none;
+      }
+      .log-dot {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+        border: 2px solid var(--bg-color);
+        flex-shrink: 0;
+        margin-top: 4px;
+      }
+      .log-dot.fix { background-color: #f0883e; }
+      .log-dot.improvement { background-color: #3fb950; }
+      .log-dot.release { background-color: var(--accent-color); }
+      .log-body {
+        flex: 1;
+      }
+      .log-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .log-title {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 1rem;
+        margin: 0;
+      }
+      .log-badge {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .badge-release { background: rgba(88,166,255,0.15); color: #58a6ff; }
+      .badge-fix { background: rgba(240,136,62,0.15); color: #f0883e; }
+      .badge-improvement { background: rgba(63,185,80,0.15); color: #3fb950; }
+      .badge-security { background: rgba(210,60,60,0.15); color: #f85149; }
+      .log-date {
+        color: var(--secondary-color);
+        font-size: 0.8rem;
+        margin-left: auto;
+      }
+      .log-description {
+        color: var(--secondary-color);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin: 0;
+      }
+      .empty-state {
+        text-align: center;
+        color: var(--secondary-color);
+        padding: 4rem 0;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo"><a href="index.html">Thalem Space</a></div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="tools.html">Browse Tools</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="hire.html">Hire</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="changelog">
+      <h1>Changelog</h1>
+      <p class="subtitle">Updates and improvements to Thalem Armwrestling Android — written by the AI dev team.</p>
+      <div id="log-list">
+        <p class="empty-state">Loading...</p>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2026 Thalem Space. All rights reserved.</p>
+    </footer>
+    <script>
+      const badgeClass = { release: 'badge-release', fix: 'badge-fix', improvement: 'badge-improvement', security: 'badge-security' };
+      const dotClass = { release: 'release', fix: 'fix', improvement: 'improvement', security: 'fix' };
+
+      async function loadChangelog() {
+        const container = document.getElementById('log-list');
+        try {
+          const res = await fetch('data/changelog.json?nocache=' + Date.now());
+          const logs = await res.json();
+          if (!logs.length) {
+            container.innerHTML = '<p class="empty-state">No updates yet.</p>';
+            return;
+          }
+          container.innerHTML = logs.map(entry => `
+            <div class="log-entry">
+              <div class="log-dot ${dotClass[entry.type] || 'release'}"></div>
+              <div class="log-body">
+                <div class="log-header">
+                  <p class="log-title">${entry.title}</p>
+                  <span class="log-badge ${badgeClass[entry.type] || 'badge-release'}">${entry.type}</span>
+                  <span class="log-date">${entry.date}</span>
+                </div>
+                <p class="log-description">${entry.description}</p>
+              </div>
+            </div>
+          `).join('');
+        } catch (e) {
+          container.innerHTML = '<p class="empty-state">Could not load changelog.</p>';
+        }
+      }
+
+      loadChangelog();
+    </script>
+  </body>
+</html>
