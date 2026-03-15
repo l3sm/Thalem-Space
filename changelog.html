@@ -19,8 +19,29 @@
       }
       .changelog .subtitle {
         color: var(--secondary-color);
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
         font-size: 0.95rem;
+      }
+      .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      .filter-pill {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--secondary-color);
+        border-radius: 999px;
+        padding: 0.25rem 0.85rem;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .filter-pill:hover, .filter-pill.active {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background: rgba(88,166,255,0.08);
       }
       .log-entry {
         display: flex;
@@ -37,9 +58,7 @@
         width: 1px;
         background-color: var(--border-color);
       }
-      .log-entry:last-child::before {
-        display: none;
-      }
+      .log-entry:last-child::before { display: none; }
       .log-dot {
         width: 15px;
         height: 15px;
@@ -52,9 +71,7 @@
       .log-dot.fix { background-color: #f0883e; }
       .log-dot.improvement { background-color: #3fb950; }
       .log-dot.release { background-color: var(--accent-color); }
-      .log-body {
-        flex: 1;
-      }
+      .log-body { flex: 1; }
       .log-header {
         display: flex;
         align-items: center;
@@ -80,6 +97,14 @@
       .badge-fix { background: rgba(240,136,62,0.15); color: #f0883e; }
       .badge-improvement { background: rgba(63,185,80,0.15); color: #3fb950; }
       .badge-security { background: rgba(210,60,60,0.15); color: #f85149; }
+      .log-project {
+        font-size: 0.75rem;
+        color: var(--secondary-color);
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 0.1rem 0.45rem;
+      }
       .log-date {
         color: var(--secondary-color);
         font-size: 0.8rem;
@@ -114,7 +139,10 @@
     </header>
     <main class="changelog">
       <h1>Changelog</h1>
-      <p class="subtitle">Updates and improvements to Thalem Armwrestling Android — written by the AI dev team.</p>
+      <p class="subtitle">Updates across all Thalem projects &mdash; apps, tools, and repos.</p>
+      <div class="filter-row" id="filter-row">
+        <button class="filter-pill active" data-filter="all">All</button>
+      </div>
       <div id="log-list">
         <p class="empty-state">Loading...</p>
       </div>
@@ -124,30 +152,57 @@
     </footer>
     <script>
       const badgeClass = { release: 'badge-release', fix: 'badge-fix', improvement: 'badge-improvement', security: 'badge-security' };
-      const dotClass = { release: 'release', fix: 'fix', improvement: 'improvement', security: 'fix' };
+      const dotClass   = { release: 'release', fix: 'fix', improvement: 'improvement', security: 'fix' };
+      let allLogs = [];
+      let activeFilter = 'all';
+
+      function render(logs) {
+        const container = document.getElementById('log-list');
+        const filtered = activeFilter === 'all' ? logs : logs.filter(e => e.project === activeFilter);
+        if (!filtered.length) { container.innerHTML = '<p class="empty-state">No updates yet.</p>'; return; }
+        container.innerHTML = filtered.map(entry => `
+          <div class="log-entry">
+            <div class="log-dot ${dotClass[entry.type] || 'release'}"></div>
+            <div class="log-body">
+              <div class="log-header">
+                <p class="log-title">${entry.title}</p>
+                <span class="log-badge ${badgeClass[entry.type] || 'badge-release'}">${entry.type}</span>
+                ${entry.project ? `<span class="log-project">${entry.project}</span>` : ''}
+                <span class="log-date">${entry.date}</span>
+              </div>
+              <p class="log-description">${entry.description}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function buildFilters(logs) {
+        const projects = [...new Set(logs.map(e => e.project).filter(Boolean))];
+        const row = document.getElementById('filter-row');
+        projects.forEach(p => {
+          const btn = document.createElement('button');
+          btn.className = 'filter-pill';
+          btn.dataset.filter = p;
+          btn.textContent = p;
+          row.appendChild(btn);
+        });
+        row.addEventListener('click', e => {
+          const pill = e.target.closest('.filter-pill');
+          if (!pill) return;
+          document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+          pill.classList.add('active');
+          activeFilter = pill.dataset.filter;
+          render(allLogs);
+        });
+      }
 
       async function loadChangelog() {
         const container = document.getElementById('log-list');
         try {
           const res = await fetch('data/changelog.json?nocache=' + Date.now());
-          const logs = await res.json();
-          if (!logs.length) {
-            container.innerHTML = '<p class="empty-state">No updates yet.</p>';
-            return;
-          }
-          container.innerHTML = logs.map(entry => `
-            <div class="log-entry">
-              <div class="log-dot ${dotClass[entry.type] || 'release'}"></div>
-              <div class="log-body">
-                <div class="log-header">
-                  <p class="log-title">${entry.title}</p>
-                  <span class="log-badge ${badgeClass[entry.type] || 'badge-release'}">${entry.type}</span>
-                  <span class="log-date">${entry.date}</span>
-                </div>
-                <p class="log-description">${entry.description}</p>
-              </div>
-            </div>
-          `).join('');
+          allLogs = await res.json();
+          buildFilters(allLogs);
+          render(allLogs);
         } catch (e) {
           container.innerHTML = '<p class="empty-state">Could not load changelog.</p>';
         }
