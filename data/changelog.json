@@ -4,6 +4,6 @@
     "type": "release",
     "project": "Thalem Armwrestling",
     "title": "AI audit crew launched",
-    "description": "Automated a 7-agent AI team to audit the Android app before every Play Store release. The crew reviews security, performance, UX, and code quality, then delivers a full report."
+    "description": "Set up a 7-agent AI crew to automatically audit the Android app before every Play Store release. It checks security, performance, UX, and code quality, then logs a full report."
   }
 ]
