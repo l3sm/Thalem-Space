@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Changelog | Thalem Space</title>
+    <title>Projects | Thalem Space</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -13,8 +13,8 @@
         <div class="logo"><a href="index.html">Thalem Space</a></div>
         <ul class="nav-links" id="nav-links">
           <li><a href="index.html">Home</a></li>
-          <li><a href="projects.html">Projects</a></li>
-          <li><a href="changelog.html" class="active">Changelog</a></li>
+          <li><a href="projects.html" class="active">Projects</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -25,15 +25,16 @@
 
     <main class="page-content">
       <div class="page-header">
-        <h1>Changelog</h1>
-        <p>Every update, across every project.</p>
+        <h1>Projects</h1>
+        <p>Everything I&rsquo;ve built and shipped.</p>
       </div>
       <div class="filter-row" id="filter-row">
         <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="android">Android</button>
+        <button class="filter-pill" data-filter="web">Web</button>
+        <button class="filter-pill" data-filter="open-source">Open Source</button>
       </div>
-      <div class="timeline" id="log-list">
-        <p class="muted">Loading&hellip;</p>
-      </div>
+      <div class="projects-grid" id="projects-container"></div>
     </main>
 
     <footer>

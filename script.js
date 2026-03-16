@@ -1,188 +1,209 @@
-/*
- * Shared JavaScript for Thalem Space
- *
- * This script powers the tools listing and individual tool pages by
- * fetching a JSON catalogue. It is deliberately simple so it can run
- * entirely in the browser without any build step or backend. When you
- * add new tools, update `data/tools.json` and the pages will
- * automatically reflect the changes.
- */
+/* Thalem Space — script.js */
 
-/**
- * Fetch the tools catalogue from the JSON file.
- *
- * @returns {Promise<Array>} A promise that resolves to an array of tools.
- */
-async function fetchTools() {
+// ── Mobile nav toggle ──
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  }
+
+  loadProjects();
+  loadProjectDetail();
+  loadChangelog();
+});
+
+// ── Fetch helpers ──
+async function fetchJSON(path) {
   try {
-    const response = await fetch('data/tools.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load tools: ${response.status}`);
-    }
-    const tools = await response.json();
-    return Array.isArray(tools) ? tools : [];
-  } catch (err) {
-    console.error(err);
-    return [];
+    const res = await fetch(path + '?t=' + Date.now());
+    if (!res.ok) throw new Error(res.status);
+    return await res.json();
+  } catch (e) {
+    console.error('fetchJSON failed:', path, e);
+    return null;
   }
 }
 
-/**
- * Populate the tools grid on the browsing page.
- */
-async function loadTools() {
-  const container = document.getElementById('tools-container');
+// ── Projects listing (projects.html) ──
+async function loadProjects() {
+  const container = document.getElementById('projects-container');
   if (!container) return;
-  container.innerHTML = '';
-  const tools = await fetchTools();
-  if (tools.length === 0) {
-    const msg = document.createElement('p');
-    msg.className = 'no-tools';
-    msg.textContent = 'No tools available yet. Check back soon!';
-    container.appendChild(msg);
+
+  const data = await fetchJSON('data/projects.json');
+  const projects = Array.isArray(data) ? data : [];
+
+  if (!projects.length) {
+    container.innerHTML = '<p class="empty-state">Nothing here yet.</p>';
     return;
   }
-  tools.forEach((tool) => {
-    const card = document.createElement('a');
-    card.className = 'tool-card';
-    card.href = `tool.html?slug=${encodeURIComponent(tool.slug)}`;
 
-    const media = getMediaElement(tool);
-    if (media) {
-      card.appendChild(media);
+  let active = 'all';
+
+  function render() {
+    const filtered = active === 'all'
+      ? projects
+      : projects.filter(p => Array.isArray(p.platform) && p.platform.includes(active));
+
+    if (!filtered.length) {
+      container.innerHTML = '<p class="empty-state">No projects in this category yet.</p>';
+      return;
     }
 
-    const content = document.createElement('div');
-    content.className = 'tool-card-content';
-    const title = document.createElement('h2');
-    title.textContent = tool.name;
-    const tagline = document.createElement('p');
-    tagline.className = 'tool-tagline';
-    tagline.textContent = tool.tagline || '';
-    const priceEl = document.createElement('p');
-    priceEl.className = 'tool-price';
-    priceEl.textContent = getPriceLabel(tool);
-    priceEl.setAttribute('aria-hidden', 'true');
-    content.append(title, tagline, priceEl);
-    card.appendChild(content);
-    container.appendChild(card);
-  });
-}
+    container.innerHTML = filtered.map(p => {
+      const badges = (p.platform || []).map(pl =>
+        `<span class="platform-badge ${pl}">${pl}</span>`
+      ).join('');
+      const status = p.status ? `<span class="status-badge">${p.status}</span>` : '';
+      const href = p.external_url
+        ? p.external_url
+        : `project.html?slug=${encodeURIComponent(p.slug)}`;
+      const target = p.external_url ? ' target="_blank" rel="noopener"' : '';
+      const imgBlock = p.image
+        ? `<img src="assets/${p.image}" alt="${p.name}" style="width:100%;border-radius:8px 8px 0 0;display:block;aspect-ratio:16/9;object-fit:cover;margin-bottom:0.75rem;">`
+        : '';
+      return `
+        <div class="project-card">
+          ${imgBlock}
+          <div class="project-card-top">${badges}${status}</div>
+          <h3>${p.name}</h3>
+          <p>${p.tagline || ''}</p>
+          <a href="${href}"${target} class="card-link">View &rarr;</a>
+        </div>`;
+    }).join('');
+  }
 
-/**
- * Populate the tool detail page based on the slug parameter.
- */
-async function loadToolDetail() {
-  const main = document.getElementById('tool-main');
-  if (!main) return;
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug');
-  if (!slug) {
-    main.innerHTML = '<p>Tool not specified.</p>';
-    return;
-  }
-  const tools = await fetchTools();
-  const tool = tools.find((t) => t.slug === slug);
-  if (!tool) {
-    main.innerHTML = '<p>Tool not found.</p>';
-    return;
-  }
-  // Build the tool detail markup
-  let videoSection = '';
-  const videoUrl = tool.video_url || tool.videoUrl;
-  if (videoUrl) {
-    videoSection = `<div class="video-wrapper"><iframe src="${getVideoEmbedUrl(videoUrl)}" allowfullscreen></iframe></div>`;
-  } else {
-    videoSection = '<p><em>Video coming soon.</em></p>';
-  }
-  const featuresList = (tool.features && tool.features.length)
-    ? '<ul>' + tool.features.map((f) => `<li>${f}</li>`).join('') + '</ul>'
-    : '<p>No features listed.</p>';
-  const priceValue = Number(tool.price_eur ?? tool.price ?? 0);
-  const priceLine = priceValue
-    ? `<p class="price">Price: €${formatPrice(priceValue)}</p>`
-    : '<p class="price">Free</p>';
-  const buyLabel = priceValue ? `Buy (€${formatPrice(priceValue)})` : 'Buy';
-  const repoUrl = tool.repo_url || tool.repoUrl;
-  const releaseUrl = tool.release_url || tool.releaseUrl;
-  const watchUrl = videoUrl || '';
-  const forWhoList = renderList(tool.for_who || tool.forWho, 'No audience listed.');
-  const notForList = renderList(tool.not_for || tool.notFor, 'No exclusions listed.');
-  main.innerHTML = `
-    <h1>${tool.name}</h1>
-    <p class="tagline">${tool.tagline || ''}</p>
-    <p>${tool.description || ''}</p>
-    ${videoSection}
-    <h2>Features</h2>
-    ${featuresList}
-    <h2>Who it's for</h2>
-    ${forWhoList}
-    <h2>Not for</h2>
-    ${notForList}
-    ${priceLine}
-    <div class="actions">
-      <button type="button" class="buy-button" data-buy="placeholder">${buyLabel}</button>
-      <div class="action-links">
-        ${watchUrl ? `<a href="${watchUrl}" target="_blank">Watch the demo</a>` : ''}
-        ${releaseUrl ? `<a href="${releaseUrl}" target="_blank">View releases</a>` : ''}
-        ${repoUrl ? `<a href="${repoUrl}" target="_blank">View source</a>` : ''}
-      </div>
-      <p class="buy-notice" hidden>Payments are not enabled yet. This will be available when thalem.space launches.</p>
-    </div>
-  `;
-  const buyButton = main.querySelector('[data-buy="placeholder"]');
-  const buyNotice = main.querySelector('.buy-notice');
-  if (buyButton && buyNotice) {
-    buyButton.addEventListener('click', () => {
-      buyNotice.hidden = false;
+  render();
+
+  // Filter pills
+  const filterRow = document.getElementById('filter-row');
+  if (filterRow) {
+    filterRow.addEventListener('click', e => {
+      const pill = e.target.closest('.filter-pill');
+      if (!pill) return;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      pill.classList.add('active');
+      active = pill.dataset.filter;
+      render();
     });
   }
 }
 
-function formatPrice(value) {
-  return Number.isInteger(value) ? String(value) : value.toFixed(2);
+// ── Project detail (project.html) ──
+async function loadProjectDetail() {
+  const container = document.getElementById('project-detail');
+  if (!container) return;
+
+  const slug = new URLSearchParams(window.location.search).get('slug');
+  if (!slug) { container.innerHTML = '<p class="muted">No project specified.</p>'; return; }
+
+  const data = await fetchJSON('data/projects.json');
+  const projects = Array.isArray(data) ? data : [];
+  const p = projects.find(x => x.slug === slug);
+
+  if (!p) { container.innerHTML = '<p class="muted">Project not found.</p>'; return; }
+
+  // Update page title
+  document.title = p.name + ' | Thalem Space';
+
+  const badges = (p.platform || []).map(pl =>
+    `<span class="platform-badge ${pl}">${pl}</span>`
+  ).join('');
+  const status = p.status ? `<span class="status-badge">${p.status}</span>` : '';
+
+  const videoBlock = p.video_url
+    ? `<div class="video-wrap"><iframe src="${embedUrl(p.video_url)}" allowfullscreen></iframe></div>`
+    : '';
+
+  const featuresList = listBlock(p.features);
+  const forWhoList = listBlock(p.for_who);
+  const notForList = listBlock(p.not_for);
+
+  const links = [];
+  if (p.external_url) links.push(`<a href="${p.external_url}" target="_blank" rel="noopener" class="primary-link">Visit Site &rarr;</a>`);
+  if (p.repo_url) links.push(`<a href="${p.repo_url}" target="_blank" rel="noopener">GitHub Repo</a>`);
+  if (p.release_url) links.push(`<a href="${p.release_url}" target="_blank" rel="noopener">Releases</a>`);
+  if (p.video_url) links.push(`<a href="${p.video_url}" target="_blank" rel="noopener">Watch Demo</a>`);
+
+  container.innerHTML = `
+    <div class="project-detail">
+      <h1>${p.name}</h1>
+      <div class="meta">${badges}${status}</div>
+      <p class="tagline">${p.tagline || ''}</p>
+      ${videoBlock}
+      ${p.description ? `<p>${p.description}</p>` : ''}
+      ${featuresList ? `<h2>Features</h2>${featuresList}` : ''}
+      ${forWhoList ? `<h2>Who it&rsquo;s for</h2>${forWhoList}` : ''}
+      ${notForList ? `<h2>Not for</h2>${notForList}` : ''}
+      ${links.length ? `<div class="project-links">${links.join('')}</div>` : ''}
+    </div>`;
 }
 
-function getPriceLabel(tool) {
-  const value = Number(tool.price_eur ?? tool.price ?? 0);
-  if (!value) return 'Free';
-  return `${formatPrice(value)} EUR`;
+function listBlock(arr) {
+  if (!Array.isArray(arr) || !arr.length) return '';
+  return '<ul>' + arr.map(i => `<li>${i}</li>`).join('') + '</ul>';
 }
 
-function getMediaElement(tool) {
-  if (!tool.image) return null;
-  const media = document.createElement('div');
-  media.className = 'tool-media';
-  const img = document.createElement('img');
-  img.className = 'tool-media-image';
-  img.src = `assets/${tool.image}`;
-  img.alt = tool.name ? `${tool.name} screenshot` : 'tool screenshot';
-  img.loading = 'lazy';
-  media.appendChild(img);
-  return media;
+function embedUrl(url) {
+  const m = url.match(/(?:youtu\.be\/|v=)([^&?/]+)/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : url;
 }
 
-function getVideoEmbedUrl(url) {
-  if (url.includes('youtube.com/embed/')) return url;
-  const match = url.match(/(?:youtu\.be\/|v=)([^&?/]+)/);
-  if (match) {
-    return `https://www.youtube.com/embed/${match[1]}`;
+// ── Changelog (changelog.html) ──
+async function loadChangelog() {
+  const container = document.getElementById('log-list');
+  if (!container) return;
+
+  const data = await fetchJSON('data/changelog.json');
+  const logs = Array.isArray(data) ? data : [];
+
+  if (!logs.length) {
+    container.innerHTML = '<p class="empty-state">No updates yet.</p>';
+    return;
   }
-  return url;
-}
 
-function renderList(value, fallback) {
-  if (Array.isArray(value) && value.length) {
-    return '<ul>' + value.map((item) => `<li>${item}</li>`).join('') + '</ul>';
-  }
-  if (typeof value === 'string' && value.trim()) {
-    return `<p>${value}</p>`;
-  }
-  return `<p>${fallback}</p>`;
-}
+  let active = 'all';
 
-// Initialise pages when DOM content is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  loadTools();
-  loadToolDetail();
-});
+  // Build project filter pills
+  const filterRow = document.getElementById('filter-row');
+  if (filterRow) {
+    const projects = [...new Set(logs.map(e => e.project).filter(Boolean))];
+    projects.forEach(proj => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-pill';
+      btn.dataset.filter = proj;
+      btn.textContent = proj;
+      filterRow.appendChild(btn);
+    });
+    filterRow.addEventListener('click', e => {
+      const pill = e.target.closest('.filter-pill');
+      if (!pill) return;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      pill.classList.add('active');
+      active = pill.dataset.filter;
+      render();
+    });
+  }
+
+  const typeBadge = { release: 'badge-release', fix: 'badge-fix', improvement: 'badge-improvement', security: 'badge-security' };
+
+  function render() {
+    const filtered = active === 'all' ? logs : logs.filter(e => e.project === active);
+    if (!filtered.length) { container.innerHTML = '<p class="empty-state">No updates yet.</p>'; return; }
+    container.innerHTML = filtered.map(e => `
+      <div class="log-entry">
+        <div class="log-dot ${e.type || 'release'}"></div>
+        <div class="log-body">
+          <div class="log-header">
+            <span class="log-title">${e.title}</span>
+            <span class="log-type-badge ${typeBadge[e.type] || 'badge-release'}">${e.type || 'update'}</span>
+            ${e.project ? `<span class="log-project">${e.project}</span>` : ''}
+            <span class="log-date">${e.date}</span>
+          </div>
+          <p class="log-description">${e.description}</p>
+        </div>
+      </div>`).join('');
+  }
+
+  render();
+}

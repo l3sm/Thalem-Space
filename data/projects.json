@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Thalem Armwrestling",
+    "slug": "thalem-armwrestling",
+    "tagline": "Training and community app for armwrestling athletes.",
+    "platform": ["android"],
+    "status": "Active",
+    "image": "",
+    "description": "A training and community app built for armwrestling athletes. Log workouts, track match results, browse an exercise library, and connect with other pullers.",
+    "features": [
+      "Structured training plans for armwrestling",
+      "Exercise library with technique notes",
+      "Match result logging",
+      "Community feed"
+    ],
+    "for_who": [
+      "Armwrestling athletes at any level",
+      "Coaches tracking athlete progress"
+    ],
+    "not_for": [
+      "General fitness tracking",
+      "Team sports"
+    ],
+    "repo_url": "https://github.com/l3sm/thalem-armwrestling",
+    "external_url": "https://armwrestling.thalem.space"
+  },
+  {
+    "name": "Project Phase Tracker",
+    "slug": "project-phase-tracker",
+    "tagline": "Offline-first project tracker. Idea → Build → Fix → Done.",
+    "platform": ["web"],
+    "status": "v1.0.0",
+    "image": "Project-Phase-Tracker.png",
+    "description": "Manage multiple projects by moving each through a simple lifecycle. Runs entirely in your browser — no accounts, no sync, no distractions.",
+    "features": [
+      "Four phases: Idea, Build, Fix, Done",
+      "Inline project inspector for notes and due dates",
+      "Sort and search by phase, date, or update time",
+      "Export and import as JSON",
+      "Fully offline — data stored in browser"
+    ],
+    "for_who": [
+      "Solo builders managing multiple projects",
+      "Anyone who wants structure without overhead"
+    ],
+    "not_for": [
+      "Teams needing collaboration",
+      "Projects requiring cloud sync"
+    ],
+    "repo_url": "https://github.com/l3sm/Project-Phase-Tracker",
+    "release_url": "https://github.com/l3sm/Project-Phase-Tracker/releases/tag/v1.0.0",
+    "video_url": "https://youtu.be/7yhx14DkoNg"
+  }
+]

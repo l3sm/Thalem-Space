@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thalem Space | About</title>
+    <title>About | Thalem Space</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -11,22 +11,33 @@
     <header>
       <nav>
         <div class="logo"><a href="index.html">Thalem Space</a></div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
           <li><a href="index.html">Home</a></li>
-          <li><a href="tools.html">Browse Tools</a></li>
+          <li><a href="projects.html">Projects</a></li>
           <li><a href="changelog.html">Changelog</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="hire.html">Hire</a></li>
+          <li><a href="about.html" class="active">About</a></li>
         </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </header>
-    <main class="about">
-      <h1>About Thalem Space</h1>
-      <p>Thalem Space is a small independent studio building practical open-source tools for freelancers and indie builders.</p>
-      <p>Every tool is built to solve a real problem, priced fairly, and maintained with care.</p>
+
+    <main class="page-content">
+      <div class="about-block">
+        <h1>About</h1>
+        <p>I&rsquo;m Angelos &mdash; CS student in Volos, Greece. I build Android apps, web tools, and automation systems. Thalem Space is where everything I ship goes public.</p>
+        <p>Currently working on Thalem Armwrestling &mdash; a training app for the armwrestling community. When I&rsquo;m not coding, I&rsquo;m pulling.</p>
+        <div class="about-links">
+          <a href="https://github.com/l3sm" target="_blank">GitHub</a>
+          <a href="mailto:pollatosangelos@gmail.com">Email</a>
+        </div>
+      </div>
     </main>
+
     <footer>
-      <p>&copy; 2026 Thalem Space. All rights reserved.</p>
+      <p>&copy; 2026 Thalem Space &middot; Angelos Pollatos &middot; <a href="https://github.com/l3sm" target="_blank">GitHub</a></p>
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>

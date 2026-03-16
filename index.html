@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thalem Space | Home</title>
+    <title>Thalem Space</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -11,71 +11,73 @@
     <header>
       <nav>
         <div class="logo"><a href="index.html">Thalem Space</a></div>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="tools.html">Browse Tools</a></li>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
           <li><a href="changelog.html">Changelog</a></li>
           <li><a href="about.html">About</a></li>
-          <li><a href="hire.html">Hire</a></li>
         </ul>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </header>
-    <main class="home">
+
+    <main>
       <section class="hero">
-        <h1>Apps, tools, and open&#8209;source projects by Angelos Pollatos</h1>
-        <p>
-          A personal hub for everything I build &mdash; Android apps, web tools, and public repos.
-          Everything open&#8209;source. No subscriptions.
-        </p>
-        <a href="tools.html" class="cta-button">Browse Projects</a>
-      </section>
-      <section class="features">
-        <div class="feature">
-          <h2>Open Source</h2>
-          <p>Every project is publicly available on GitHub. Read the code, fork it, or contribute.</p>
-        </div>
-        <div class="feature">
-          <h2>Public Changelog</h2>
-          <p>Every update across every project &mdash; apps, tools, and repos &mdash; logged in one place.</p>
-        </div>
-        <div class="feature">
-          <h2>Built to Ship</h2>
-          <p>Real projects used by real people. From Android apps to automation tools.</p>
+        <h1>Apps, tools, and open&#8209;source projects</h1>
+        <p>Built by Angelos Pollatos &mdash; CS student, developer, armwrestler.<br>Everything I ship lives here.</p>
+        <div class="hero-actions">
+          <a href="projects.html" class="btn btn-primary">Browse Projects</a>
+          <a href="changelog.html" class="btn btn-secondary">Changelog</a>
         </div>
       </section>
-      <section class="featured-tools">
+
+      <section class="what-i-build">
+        <div class="build-card">
+          <div class="build-icon">📱</div>
+          <h3>Android Apps</h3>
+          <p>Native Android apps, shipped to the Play Store.</p>
+        </div>
+        <div class="build-card">
+          <div class="build-icon">🌐</div>
+          <h3>Web Tools</h3>
+          <p>Lightweight browser tools. No accounts, no subscriptions.</p>
+        </div>
+        <div class="build-card">
+          <div class="build-icon">⚙️</div>
+          <h3>Open Source</h3>
+          <p>Everything is public on GitHub. Read it, fork it, use it.</p>
+        </div>
+      </section>
+
+      <section class="featured">
         <h2>Projects</h2>
-        <div class="tools-grid">
-          <div class="tool-card">
-            <h2>Thalem Armwrestling</h2>
-            <p>A training and community app for armwrestling athletes. Track workouts, log matches, and connect with other pullers.</p>
-            <p class="card-description">
-              Built for Android. Covers structured training plans, exercise libraries, and match logging. Available on the Play Store.
-            </p>
-            <div class="card-meta">
-              <span class="badge">Android</span>
-              <span class="badge">Free</span>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-card-top">
+              <span class="platform-badge android">Android</span>
             </div>
-            <a href="https://armwrestling.thalem.space" class="details-link" target="_blank">View</a>
+            <h3>Thalem Armwrestling</h3>
+            <p>Training and community app for armwrestling athletes.</p>
+            <a href="https://armwrestling.thalem.space" class="card-link" target="_blank">View &rarr;</a>
           </div>
-          <div class="tool-card">
-            <h2>Project Phase Tracker</h2>
-            <p>A lightweight, offline-first tracker for moving projects cleanly from idea to done.</p>
-            <p class="card-description">
-              Manage multiple projects through a simple lifecycle: Idea &rarr; Build &rarr; Fix &rarr; Done. Runs locally in your browser &mdash; no accounts, no sync.
-            </p>
-            <div class="card-meta">
-              <span class="badge">Web</span>
-              <span class="price">&euro;3</span>
+          <div class="project-card">
+            <div class="project-card-top">
+              <span class="platform-badge web">Web</span>
             </div>
-            <a href="tool.html?slug=project-phase-tracker" class="details-link">View</a>
+            <h3>Project Phase Tracker</h3>
+            <p>Offline-first project tracker. Idea &rarr; Build &rarr; Fix &rarr; Done.</p>
+            <a href="project.html?slug=project-phase-tracker" class="card-link">View &rarr;</a>
           </div>
         </div>
-        <a href="tools.html" class="browse-link">Browse all projects</a>
+        <a href="projects.html" class="browse-link">Browse all projects &rarr;</a>
       </section>
     </main>
+
     <footer>
-      <p>&copy; 2026 Thalem Space. All rights reserved.</p>
+      <p>&copy; 2026 Thalem Space &middot; Angelos Pollatos &middot; <a href="https://github.com/l3sm" target="_blank">GitHub</a></p>
     </footer>
+    <script src="script.js"></script>
   </body>
 </html>
