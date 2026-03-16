@@ -5,12 +5,5 @@
     "project": "Thalem Armwrestling",
     "title": "Add README.md file",
     "description": "Code update pushed by ANGELOS POLLATOS. 1 files added, 0 modified, 0 removed."
-  },
-  {
-    "date": "16 Mar 2026",
-    "type": "release",
-    "project": "Thalem Armwrestling",
-    "title": "AI audit crew launched",
-    "description": "Set up a 7-agent AI crew to automatically audit the Android app before every Play Store release. It checks security, performance, UX, and code quality, then logs a full report."
   }
 ]
