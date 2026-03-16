@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Changelog | Thalem Space</title>
+    <title>Apps | Thalem Space</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -14,8 +14,8 @@
         <ul class="nav-links" id="nav-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="projects.html">Projects</a></li>
-          <li><a href="apps.html">Apps</a></li>
-          <li><a href="changelog.html" class="active">Changelog</a></li>
+          <li><a href="apps.html" class="active">Apps</a></li>
+          <li><a href="changelog.html">Changelog</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -26,14 +26,19 @@
 
     <main class="page-content">
       <div class="page-header">
-        <h1>Changelog</h1>
-        <p>Every update, across every project.</p>
+        <h1>Apps</h1>
+        <p>Lightweight tools you can use right now. No accounts, no tracking.</p>
       </div>
-      <div class="filter-row" id="filter-row">
-        <button class="filter-pill active" data-filter="all">All</button>
-      </div>
-      <div class="timeline" id="log-list">
-        <p class="muted">Loading&hellip;</p>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-card-top">
+            <span class="platform-badge web">Web</span>
+            <span class="status-badge">v1.0.0</span>
+          </div>
+          <h3>Project Phase Tracker</h3>
+          <p>Move your projects through Idea &rarr; Build &rarr; Fix &rarr; Done. Offline-first, runs entirely in your browser.</p>
+          <a href="https://ppt.app.thalem.space" target="_blank" class="card-link">Open app &rarr;</a>
+        </div>
       </div>
     </main>
 

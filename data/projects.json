@@ -27,17 +27,17 @@
   {
     "name": "Project Phase Tracker",
     "slug": "project-phase-tracker",
-    "tagline": "Offline-first project tracker. Idea → Build → Fix → Done.",
+    "tagline": "Offline-first project tracker. Idea \u2192 Build \u2192 Fix \u2192 Done.",
     "platform": ["web"],
     "status": "v1.0.0",
     "image": "Project-Phase-Tracker.png",
-    "description": "Manage multiple projects by moving each through a simple lifecycle. Runs entirely in your browser — no accounts, no sync, no distractions.",
+    "description": "Manage multiple projects by moving each through a simple lifecycle. Runs entirely in your browser \u2014 no accounts, no sync, no distractions.",
     "features": [
       "Four phases: Idea, Build, Fix, Done",
       "Inline project inspector for notes and due dates",
       "Sort and search by phase, date, or update time",
       "Export and import as JSON",
-      "Fully offline — data stored in browser"
+      "Fully offline \u2014 data stored in browser"
     ],
     "for_who": [
       "Solo builders managing multiple projects",
@@ -49,6 +49,7 @@
     ],
     "repo_url": "https://github.com/l3sm/Project-Phase-Tracker",
     "release_url": "https://github.com/l3sm/Project-Phase-Tracker/releases/tag/v1.0.0",
-    "video_url": "https://youtu.be/7yhx14DkoNg"
+    "video_url": "https://youtu.be/7yhx14DkoNg",
+    "external_url": "https://ppt.app.thalem.space"
   }
 ]
